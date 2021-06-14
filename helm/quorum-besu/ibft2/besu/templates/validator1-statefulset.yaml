@@ -7,7 +7,7 @@ metadata:
   namespace: {{ .Values.namespace }}
 
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: {{ $validatorNumber }}-key-read-role
@@ -22,7 +22,7 @@ rules:
   verbs: ["get", "list"]
 ---
 
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: {{ $validatorNumber }}-rb
@@ -142,7 +142,7 @@ spec:
             exec /opt/besu/bin/besu \
               --node-private-key-file=/secrets/key \
               --config-file=/etc/besu/config.toml \
-              --p2p-host=${VALIDATOR1_SERVICE_HOST} --Xnat-kube-service-name={{ template "besu.fullname" . }}-{{ $validatorNumber }} \
+              --p2p-host=${VALIDATOR1_SERVICE_HOST} --Xnat-kube-service-name={{ template "besu.fullname" . }}-{{ $validatorNumber }}-tcp \
               --bootnodes=enode://${VALIDATOR1_PUBKEY}@${VALIDATOR1_SERVICE_HOST}:30303,enode://${VALIDATOR2_PUBKEY}@${VALIDATOR2_SERVICE_HOST}:30303
         livenessProbe:
           httpGet:
