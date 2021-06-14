@@ -47,37 +47,37 @@ spec:
             - name: ACCOUNT_INGRESS_CONTRACT_ADDRESS
               valueFrom:
                 secretKeyRef:
-                  name: dapp-besu-secret
+                  name: {{ template "dapp-besu.fullname" . }}-secret
                   key: account_ingress_contract_address
             - name: INITIAL_WHITELISTED_ACCOUNT
               valueFrom:
                 secretKeyRef:
-                  name: dapp-besu-secret
+                  name: {{ template "dapp-besu.fullname" . }}-secret
                   key: initial_whitelisted_account
             - name: INITIAL_WHITELISTED_NODES
               valueFrom:
                 secretKeyRef:
-                  name: dapp-besu-secret
+                  name: {{ template "dapp-besu.fullname" . }}-secret
                   key: initial_whitelisted_nodes
             - name: NETWORK_ID
               valueFrom:
                 secretKeyRef:
-                  name: dapp-besu-secret
+                  name: {{ template "dapp-besu.fullname" . }}-secret
                   key: network_id
             - name: NODE_INGRESS_CONTRACT_ADDRESS
               valueFrom:
                 secretKeyRef:
-                  name: dapp-besu-secret
+                  name: {{ template "dapp-besu.fullname" . }}-secret
                   key: node_ingress_contract_address
             - name: PANTHEON_NODE_PERM_ACCOUNT
               valueFrom:
                 secretKeyRef:
-                  name: dapp-besu-secret
+                  name: {{ template "dapp-besu.fullname" . }}-secret
                   key: pantheon_node_perm_account
             - name: PANTHEON_NODE_PERM_ENDPOINT
               valueFrom:
                 secretKeyRef:
-                  name: dapp-besu-secret
+                  name: {{ template "dapp-besu.fullname" . }}-secret
                   key: pantheon_node_perm_endpoint
             - name: PANTHEON_NODE_PERM_KEY
               valueFrom:
