@@ -104,6 +104,9 @@ spec:
             - containerPort: 9080
               name: tessera-tp
               protocol: TCP
+            - containerPort: 9081
+              name: tessera-q2t
+              protocol: TCP
           command:
             - /bin/sh
             - -c
@@ -115,6 +118,7 @@ spec:
 
                   cat <<EOF > /data/tm/tessera-config-09.json
                   {
+                    "mode": "orion",
                     "useWhiteList": false,
                     "jdbc": {
                       "username": "sa",
@@ -132,7 +136,7 @@ spec:
                     {
                       "app":"Q2T",
                       "enabled": true,
-                      "serverAddress": "unix:/data/tm/tm.ipc",
+                      "serverAddress": "http://besu-member1.besu.svc.cluster.local:9081",
                       "communicationType" : "REST"
                     },
                     {
@@ -147,7 +151,7 @@ spec:
                     ],
                     "peer": [
                       {
-                          "url": "http://besu-member2.besu.svc.cluster.local:9000"
+                          "url": "http://besu-member1.besu.svc.cluster.local:9000"
                       },
                       {
                           "url": "http://besu-member2.besu.svc.cluster.local:9000"
@@ -237,21 +241,13 @@ spec:
           args:
             - |
               exec
-
-              for i in $$(seq 1 100)
-              do
-                set -e
-                if [ "I'm up!" == "$$(wget --timeout 10 -qO- --proxy off http://127.0.0.1:9000/upcheck)" ];
-                  then break
-                else
-                  echo "Waiting for Tessera..."
-                  sleep 10
-                fi
-              done
-
               /opt/besu/bin/besu \
                 --node-private-key-file=/secrets/key \
                 --config-file=/etc/besu/config.toml \
+                --privacy-enabled=true \
+                --privacy-url=http://${BESU_MEMBER2_SERVICE_HOST}:9101 \
+                --privacy-public-key-file=/secrets/tm.pub \
+                --privacy-onchain-groups-enabled=false \
                 --Xdns-enabled=true --Xdns-update-enabled=true --Xnat-kube-service-name=besu-member2 \
                 --bootnodes=enode://${VALIDATOR1_PUBKEY}@validator1-0.besu-validator1.besu.svc.cluster.local:30303,enode://${VALIDATOR2_PUBKEY}@validator2-0.besu-validator2.besu.svc.cluster.local:30303
           livenessProbe:

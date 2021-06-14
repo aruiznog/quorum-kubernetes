@@ -6,7 +6,7 @@ metadata:
     app: member2
   namespace: besu
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     app: member2
   ports:
@@ -22,6 +22,7 @@ spec:
       targetPort: 8545
       protocol: TCP
       name: json-rpc
+      nodePort: 30032
     - port: 8546
       targetPort: 8546
       protocol: TCP
