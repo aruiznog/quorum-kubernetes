@@ -1,0 +1,22 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "dapp-besu.fullname" . }}-service
+  labels:
+    app: {{ template "dapp-besu.name" . }}
+    chart: {{ template "dapp-besu.chart" . }}
+    release: {{ .Release.Name }}
+    namespace: {{ .Release.Namespace }}
+    heritage: {{ .Release.Service }}
+    component: dapp
+spec:
+  type: LoadBalancer
+  selector:
+    app: {{ template "dapp-besu.name" . }}
+    release: {{ .Release.Name }}
+    component: dapp
+  ports:
+  - name: "3000"
+    port: 3000
+    targetPort: 3000

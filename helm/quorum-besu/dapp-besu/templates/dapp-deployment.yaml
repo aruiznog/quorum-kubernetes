@@ -1,0 +1,88 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "dapp-besu.fullname" . }}
+  labels:
+    app: {{ template "dapp-besu.name" . }}
+    chart: {{ template "dapp-besu.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: dapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: dapp
+  template:
+    metadata:
+      labels:
+        app: {{ template "dapp-besu.name" . }}
+        release: {{ .Release.Name }}
+        component: dapp
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9090"
+    spec:
+      containers:
+        - name: dapp-besu
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              cpu: 500m
+              memory: 512Mi
+            limits:
+              cpu: 800m
+              memory: 1Gi
+          env:
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: ACCOUNT_INGRESS_CONTRACT_ADDRESS
+              valueFrom:
+                secretKeyRef:
+                  name: dapp-besu-secret
+                  key: account_ingress_contract_address
+            - name: INITIAL_WHITELISTED_ACCOUNT
+              valueFrom:
+                secretKeyRef:
+                  name: dapp-besu-secret
+                  key: initial_whitelisted_account
+            - name: INITIAL_WHITELISTED_NODES
+              valueFrom:
+                secretKeyRef:
+                  name: dapp-besu-secret
+                  key: initial_whitelisted_nodes
+            - name: NETWORK_ID
+              valueFrom:
+                secretKeyRef:
+                  name: dapp-besu-secret
+                  key: network_id
+            - name: NODE_INGRESS_CONTRACT_ADDRESS
+              valueFrom:
+                secretKeyRef:
+                  name: dapp-besu-secret
+                  key: node_ingress_contract_address
+            - name: PANTHEON_NODE_PERM_ACCOUNT
+              valueFrom:
+                secretKeyRef:
+                  name: dapp-besu-secret
+                  key: pantheon_node_perm_account
+            - name: PANTHEON_NODE_PERM_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: dapp-besu-secret
+                  key: pantheon_node_perm_endpoint
+            - name: PANTHEON_NODE_PERM_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: dapp-besu-secret
+                  key: pantheon_node_perm_key
+          ports:
+          - containerPort: 3000
