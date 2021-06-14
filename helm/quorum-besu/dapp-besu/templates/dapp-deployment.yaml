@@ -82,7 +82,7 @@ spec:
             - name: PANTHEON_NODE_PERM_KEY
               valueFrom:
                 secretKeyRef:
-                  name: dapp-besu-secret
+                  name: {{ template "dapp-besu.fullname" . }}-secret
                   key: pantheon_node_perm_key
           ports:
           - containerPort: 3000
