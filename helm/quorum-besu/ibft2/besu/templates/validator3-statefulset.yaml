@@ -8,7 +8,7 @@ metadata:
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
+kind: ClusterRole
 metadata:
   name: {{ $validatorNumber }}-key-read-role
   namespace: {{ .Values.namespace }}
@@ -23,18 +23,18 @@ rules:
 ---
 
 apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
+kind: ClusterRoleBinding
 metadata:
   name: {{ $validatorNumber }}-rb
   namespace: {{ .Values.namespace }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: Role
+  kind: ClusterRole
   name: {{ $validatorNumber }}-key-read-role
 subjects:
-  - kind: ServiceAccount
-    name: {{ $validatorNumber }}-sa
-    namespace: {{ .Values.namespace }}
+- kind: ServiceAccount
+  name: {{ $validatorNumber }}-sa
+  namespace: {{ .Values.namespace }}
 
 ---
 apiVersion: apps/v1
@@ -154,7 +154,10 @@ spec:
             exec /opt/besu/bin/besu \
               --node-private-key-file=/secrets/key \
               --config-file=/etc/besu/config.toml \
-              --p2p-host=${VALIDATOR3_SERVICE_HOST} --Xnat-kube-service-name={{ template "besu.fullname" . }}-{{ $validatorNumber }}\
+              --nat-method=KUBERNETES \
+              --Xdns-enabled=true \
+              --Xdns-update-enabled=true \
+              --Xnat-kube-service-name={{ template "besu.fullname" . }}-{{ $validatorNumber }}\
               --bootnodes=enode://${VALIDATOR1_PUBKEY}@${VALIDATOR1_SERVICE_HOST}:30303,enode://${VALIDATOR2_PUBKEY}@${VALIDATOR2_SERVICE_HOST}:30303
         livenessProbe:
           httpGet:
