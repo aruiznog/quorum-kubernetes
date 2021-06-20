@@ -26,8 +26,8 @@ validators:
   cpuRequest: "100m"
   cpuLimit: "500m"
   validator1:
-    privateKey: "0x8457b1dc606d05308cc96f604dbde54ad85cb4de508742c8e265080b9e08b48c"
-    publicKey: "0x5d812c3c25ff398ab416968fce9009c2be7ed70a87abc8ea30bd667ce17a9287a6341fbf6ce757bb8148436c39c71296639ea81afcc94cdf908b6e1344f26188"
+    privateKey: "0x1b5553869ce5922581ddabfef7f3139618705360e2ffc0f997f4bd6ebcf9bda4"
+    publicKey: "0xf34ab4214d64122ab6d9fba397ab814d6ceb7af30f1a6715f5fd1cb175ecf12eba8a818eee0120fb9cad499d1872c6224a87df9684f551ad74831d2b91aee96b"
 
   validator2:
     privateKey: "0xa53a0dea5e51a9e0735e331b336af65d60f516c7080a52da683f6fd96342be42"
@@ -90,15 +90,18 @@ besuConfig:
     url: "http://127.0.0.1:8888"
     precompiledAddress: 9
   permissions:
-    enabled: false
+    enabled: true
     nodes:
       enabled: false
       filePath: "/etc/permissions"
-    nodesContract:
-      enabled: false
-      address: "0x0000000000000000000000000000000000001234"
     accounts:
       enabled: false
+    nodesContract:
+      enabled: true
+      address: "0x0000000000000000000000000000000000009999"
+    accountsContract:
+      enabled: true
+      address: "0x0000000000000000000000000000000000008888"
 
 
 
