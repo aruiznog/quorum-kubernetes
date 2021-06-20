@@ -1,4 +1,4 @@
-{{- $validatorNumber := "validator1" }}
+{{- $validatorNumber := "node" }}
 ---
 apiVersion: v1
 kind: Service
