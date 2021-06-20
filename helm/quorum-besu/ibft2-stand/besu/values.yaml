@@ -6,7 +6,7 @@ image:
   repository: hyperledger/besu
   tag: latest
 
-namespace: besu
+namespace: besu2
 
 # config specific to node-statefulset ie. replicas, storage etc
 node:
