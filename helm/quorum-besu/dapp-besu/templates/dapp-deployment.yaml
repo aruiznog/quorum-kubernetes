@@ -69,20 +69,20 @@ spec:
                 secretKeyRef:
                   name: {{ template "dapp-besu.fullname" . }}-secret
                   key: node_ingress_contract_address
-            - name: PANTHEON_NODE_PERM_ACCOUNT
+            - name: BESU_NODE_PERM_ACCOUNT
               valueFrom:
                 secretKeyRef:
                   name: {{ template "dapp-besu.fullname" . }}-secret
-                  key: pantheon_node_perm_account
-            - name: PANTHEON_NODE_PERM_ENDPOINT
+                  key: besu_node_perm_account
+            - name: BESU_NODE_PERM_ENDPOINT
               valueFrom:
                 secretKeyRef:
                   name: {{ template "dapp-besu.fullname" . }}-secret
-                  key: pantheon_node_perm_endpoint
-            - name: PANTHEON_NODE_PERM_KEY
+                  key: besu_node_perm_endpoint
+            - name: BESU_NODE_PERM_KEY
               valueFrom:
                 secretKeyRef:
                   name: {{ template "dapp-besu.fullname" . }}-secret
-                  key: pantheon_node_perm_key
+                  key: besu_node_perm_key
           ports:
           - containerPort: 3000
